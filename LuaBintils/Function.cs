@@ -5,8 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
-using MiscUtil.IO;
-using MiscUtil.Conversion;
+
 
 namespace LuaBin {
 	public class Function {
@@ -19,7 +18,7 @@ namespace LuaBin {
 		public Constants Constants;
 		public DbgInfo DebugInfo;
 
-		public Function(EndianBinaryReader R) {
+		public Function(BinaryReader R) {
 			Src = R.ReadLuaString();
 			LineDefined = R.ReadInt32();
 			LastLineDefined = R.ReadInt32();
@@ -43,7 +42,7 @@ namespace LuaBin {
 			DebugInfo = new DbgInfo();
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.WriteLuaString(Src);
 			W.Write(LineDefined);
 			W.Write(LastLineDefined);

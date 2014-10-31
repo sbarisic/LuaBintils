@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaBintils", "LuaBintils\LuaBintils.csproj", "{B188E53E-778E-4563-9510-09C25D522511}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{B188E53E-778E-4563-9510-09C25D522511}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B188E53E-778E-4563-9510-09C25D522511}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B188E53E-778E-4563-9510-09C25D522511}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

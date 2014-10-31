@@ -5,15 +5,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
-using MiscUtil.IO;
-using MiscUtil.Conversion;
 
 namespace LuaBin {
 	public class Constants {
 		public List<Tuple<LType, object>> List;
 		public List<Function> Functions;
 
-		public Constants(EndianBinaryReader R) {
+		public Constants(BinaryReader R) {
 			int ListLen = R.ReadInt32();
 			List = new List<Tuple<LType, object>>(ListLen);
 
@@ -57,7 +55,7 @@ namespace LuaBin {
 			Functions.Add(F);
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.Write(List.Count);
 			for (int i = 0; i < List.Count; i++) {
 				LType T = List[i].Item1;

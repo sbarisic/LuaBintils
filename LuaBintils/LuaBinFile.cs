@@ -5,29 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-using MiscUtil.IO;
-using MiscUtil.Conversion;
 
 namespace LuaBin {
-	public class LuaBinFile {
+	public class LuaChunk {
 		public Header Header;
 		public List<Function> Functions;
 
-		public LuaBinFile(Header H = null) {
+		public LuaChunk()
+			: this((Header)null) {
+		}
+
+		public LuaChunk(Header H) {
 			Header = H;
 			if (H == null)
 				Header = new Header();
 			Functions = new List<Function>();
 		}
 
-		public LuaBinFile(Header H, params Function[] Funcs) : this(H) {
+		public LuaChunk(params Function[] Funcs)
+			: this(null, Funcs) {
+		}
+
+		public LuaChunk(Header H, params Function[] Funcs) : this(H) {
 			if (Funcs != null)
 				for (int i = 0; i < Funcs.Length; i++)
 					Functions.Add(Funcs[i]);
 		}
 
 		public void Save(string Path) {
-			EndianBinaryWriter W = BeginSave(Path);
+			BinaryWriter W = BeginSave(Path);
 
 			this.Header.Save(W);
 			foreach (Function Func in Functions)
@@ -37,10 +43,10 @@ namespace LuaBin {
 			W.Close();
 		}
 
-		public static EndianBinaryWriter BeginSave(string Path) {
+		public static BinaryWriter BeginSave(string Path) {
 			if (File.Exists(Path))
 				File.Delete(Path);
-			return new EndianBinaryWriter(EndianBitConverter.Little, File.OpenWrite(Path));
+			return new BinaryWriter(File.OpenWrite(Path));
 		}
 	}
 }

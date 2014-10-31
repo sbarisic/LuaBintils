@@ -6,8 +6,6 @@ using System.Threading.Tasks;
 using System.Runtime.InteropServices;
 
 using System.IO;
-using MiscUtil.IO;
-using MiscUtil.Conversion;
 
 namespace LuaBin {
 	public class Vector<T> {
@@ -27,13 +25,13 @@ namespace LuaBin {
 	}
 
 	public class IntVector : Vector<int> {
-		public IntVector(EndianBinaryReader R) {
+		public IntVector(BinaryReader R) {
 			Data = new int[R.ReadInt32()];
 			for (int i = 0; i < Data.Length; i++)
 				Data[i] = R.ReadInt32();
 		}
 
-		public IntVector(EndianBinaryReader R, int Size)
+		public IntVector(BinaryReader R, int Size)
 			: this(R) {
 		}
 
@@ -41,7 +39,7 @@ namespace LuaBin {
 			Data = Ints;
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.Write(Data.Length);
 			for (int i = 0; i < Data.Length; i++)
 				W.Write(Data[i]);
@@ -49,13 +47,13 @@ namespace LuaBin {
 	}
 
 	public class InstrVector : Vector<Instruction> {
-		public InstrVector(EndianBinaryReader R) {
+		public InstrVector(BinaryReader R) {
 			Data = new Instruction[R.ReadInt32()];
 			for (int i = 0; i < Data.Length; i++)
 				Data[i] = new Instruction(R.ReadInt32());
 		}
 
-		public InstrVector(EndianBinaryReader R, int Size)
+		public InstrVector(BinaryReader R, int Size)
 			: this(R) {
 		}
 
@@ -63,7 +61,7 @@ namespace LuaBin {
 			Data = Instrs;
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.Write(Data.Length);
 			for (int i = 0; i < Data.Length; i++)
 				Data[i].Save(W);

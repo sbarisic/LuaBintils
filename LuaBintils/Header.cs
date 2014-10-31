@@ -5,8 +5,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using System.IO;
-using MiscUtil.IO;
-using MiscUtil.Conversion;
 
 namespace LuaBin {
 	public class Header {
@@ -31,8 +29,8 @@ namespace LuaBin {
 		}
 		public string Version;
 
-		public Header(EndianBinaryReader R) {
-			R.Seek(0, SeekOrigin.Begin);
+		public Header(BinaryReader R) {
+			R.BaseStream.Seek(0, SeekOrigin.Begin);
 
 			Dbg.Assert(R.ReadByte() == 0x1B, "Invalid Header");
 			Dbg.Assert(R.ReadByte() == 0x4C && R.ReadByte() == 0x75 && R.ReadByte() == 0x61, "Invalid Header");
@@ -57,7 +55,7 @@ namespace LuaBin {
 			FloatingPoint = false;
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.Seek(0, SeekOrigin.Begin);
 			W.Write(new byte[] { 0x1B, 0x4C, 0x75, 0x61 });
 			W.Write(BVer);

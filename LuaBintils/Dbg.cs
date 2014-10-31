@@ -3,8 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using MiscUtil.IO;
+using System.IO;
 
 namespace LuaBin {
 	static class Dbg {
@@ -13,7 +12,7 @@ namespace LuaBin {
 				throw new Exception(Msg);
 		}
 
-		public static string ReadString(this EndianBinaryReader R, int Len) {
+		public static string ReadString(this BinaryReader R, int Len) {
 			if (Len == 0)
 				return "";
 			char[] S = new char[Len - 1];
@@ -23,19 +22,19 @@ namespace LuaBin {
 			return new string(S);
 		}
 
-		public static LType ReadLuaType(this EndianBinaryReader R) {
+		public static LType ReadLuaType(this BinaryReader R) {
 			return (LType)R.ReadByte();
 		}
 
-		public static void WriteLuaType(this EndianBinaryWriter W, LType T) {
+		public static void WriteLuaType(this BinaryWriter W, LType T) {
 			W.Write((byte)T);
 		}
 
-		public static string ReadLuaString(this EndianBinaryReader R) {
+		public static string ReadLuaString(this BinaryReader R) {
 			return R.ReadString(R.ReadInt32());
 		}
 
-		public static void WriteLuaString(this EndianBinaryWriter W, string Str) {
+		public static void WriteLuaString(this BinaryWriter W, string Str) {
 			W.Write(Str.Length + 1);
 			for (int i = 0; i < Str.Length; i++)
 				W.Write((byte)Str[i]);

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MiscUtil.IO;
+using System.IO;
 
 namespace LuaBin {
 	public enum LType {
@@ -62,7 +62,7 @@ namespace LuaBin {
 			Init(CREATE_ABCBx((int)Code, 0, 0, 0, 0));
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			W.Write(I);
 		}
 

@@ -3,10 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.IO;
-using MiscUtil.IO;
-using MiscUtil.Conversion;
 
 namespace LuaBin {
 	public class DbgInfo {
@@ -14,7 +11,7 @@ namespace LuaBin {
 		public Tuple<string, int, int>[] LocalVars;
 		public string[] UpValues;
 
-		public DbgInfo(EndianBinaryReader R) {
+		public DbgInfo(BinaryReader R) {
 			LineInfo = new IntVector(R, sizeof(int));
 			LocalVars = new Tuple<string, int, int>[R.ReadInt32()];
 			for (int i = 0; i < LocalVars.Length; i++)
@@ -32,7 +29,7 @@ namespace LuaBin {
 			UpValues = new string[] { };
 		}
 
-		public void Save(EndianBinaryWriter W) {
+		public void Save(BinaryWriter W) {
 			LineInfo.Save(W);
 			W.Write(LocalVars.Length);
 			for (int i = 0; i < LocalVars.Length; i++) {

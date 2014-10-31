@@ -1,0 +1,6 @@
+E:\Projects\LuaBintils\bin\Test.exe.config
+E:\Projects\LuaBintils\bin\Test.exe
+E:\Projects\LuaBintils\bin\Test.pdb
+E:\Projects\LuaBintils\Test\obj\Debug\Test.csprojResolveAssemblyReference.cache
+E:\Projects\LuaBintils\Test\obj\Debug\Test.exe
+E:\Projects\LuaBintils\Test\obj\Debug\Test.pdb
