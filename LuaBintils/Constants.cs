@@ -47,8 +47,10 @@ namespace LuaBin {
 			Functions = new List<Function>();
 		}
 
-		public void Add(LType T, object Val) {
-			List.Add(new Tuple<LType, object>(T, Val));
+		public int Add(LType T, object Val) {
+			Tuple<LType, object> Item = new Tuple<LType, object>(T, Val);
+			List.Add(Item);
+			return List.IndexOf(Item);
 		}
 
 		public void Add(Function F) {

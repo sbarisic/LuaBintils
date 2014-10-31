@@ -32,6 +32,14 @@ namespace LuaBin {
 					Functions.Add(Funcs[i]);
 		}
 
+		public Function CreateFunction(byte MaxStackSize = 0, string SrcName = "=stdin") {
+			Function F = new Function();
+			F.Src = SrcName;
+			F.MaxStackSize = MaxStackSize;
+			Functions.Add(F);
+			return F;
+		}
+
 		public void Save(string Path) {
 			BinaryWriter W = BeginSave(Path);
 

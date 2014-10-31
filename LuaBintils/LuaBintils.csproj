@@ -45,7 +45,7 @@
     <Compile Include="Function.cs" />
     <Compile Include="Header.cs" />
     <Compile Include="Instruction.cs" />
-    <Compile Include="LuaBinFile.cs" />
+    <Compile Include="LuaChunk.cs" />
     <Compile Include="OpCode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Vector.cs" />

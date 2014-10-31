@@ -11,20 +11,22 @@ namespace Test {
 		static void Main(string[] args) {
 			Console.Title = "LuaBintils Test";
 
-			LuaChunk C = new LuaChunk();
+			LuaChunk MainChunk = new LuaChunk();
+			Function MainFunc = MainChunk.CreateFunction(2);
 
-			Function F = new Function(new Instruction[] {
-				new Instruction(OpCode.GETGLOBAL),
-				new Instruction(OpCode.LOADK, 1, 0, 1, 1),
-				new Instruction(OpCode.CALL, 0, 2, 1, 1025),
-				new Instruction(OpCode.RETURN, 0, 1, 0, 512),
-			});
+			int PrintIdx = MainFunc.Push(LType.String, "print");
+			int Str1Idx = MainFunc.Push(LType.String, "Hello World #1!");
+			int Str2Idx = MainFunc.Push(LType.String, "Hello World #2!");
 
-			F.Constants.Add(LType.String, "print");
-			F.Constants.Add(LType.String, "Hello World!");
+			MainFunc.Push(OpCode.GETGLOBAL, 0, PrintIdx);
+			MainFunc.Push(OpCode.LOADK, 1, Str1Idx);
+			MainFunc.Push(OpCode.CALL, 0, 2, 1);
+			MainFunc.Push(OpCode.GETGLOBAL, 0, PrintIdx);
+			MainFunc.Push(OpCode.LOADK, 1, Str2Idx);
+			MainFunc.Push(OpCode.CALL, 0, 2, 1);
+			MainFunc.Push(OpCode.RETURN, 0, 0);
 
-			C.Functions.Add(F);
-			C.Save("lua.out");
+			MainChunk.Save("lua.out");
 
 			Console.WriteLine("Complete");
 			Console.ReadLine();

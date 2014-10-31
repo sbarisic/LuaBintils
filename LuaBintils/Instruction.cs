@@ -25,7 +25,7 @@ namespace LuaBin {
 		public int A, B, C, Bx, sBx;
 		public OpCode Code;
 
-		internal void Init(int i) {
+		public Instruction(int i) {
 			I = i;
 
 			A = ((i) >> POS_A) & MASK1(SIZE_A, 0);
@@ -37,31 +37,6 @@ namespace LuaBin {
 			Code = (OpCode)(((i) >> POS_OP) & MASK1(SIZE_OP, 0));
 		}
 
-		public Instruction(int i) {
-			this.Code = (OpCode)(this.A = this.B = this.C = this.Bx = this.sBx = this.I = 0);
-			Init(i);
-		}
-
-		public Instruction(OpCode Code, int A, int B, int C, int Bx) {
-			this.Code = (OpCode)(this.A = this.B = this.C = this.Bx = this.sBx = this.I = 0);
-			Init(CREATE_ABCBx((int)Code, A, B, C, Bx));
-		}
-
-		public Instruction(OpCode Code, int A, int B, int C) {
-			this.Code = (OpCode)(this.A = this.B = this.C = this.Bx = this.sBx = this.I = 0);
-			Init(CREATE_ABCBx((int)Code, A, B, C, 0));
-		}
-
-		public Instruction(OpCode Code, int A, int B) {
-			this.Code = (OpCode)(this.A = this.B = this.C = this.Bx = this.sBx = this.I = 0);
-			Init(CREATE_ABCBx((int)Code, A, B, 0, 0));
-		}
-
-		public Instruction(OpCode Code) {
-			this.Code = (OpCode)(this.A = this.B = this.C = this.Bx = this.sBx = this.I = 0);
-			Init(CREATE_ABCBx((int)Code, 0, 0, 0, 0));
-		}
-
 		public void Save(BinaryWriter W) {
 			W.Write(I);
 		}
@@ -70,9 +45,21 @@ namespace LuaBin {
 			return Code.ToString();
 		}
 
+		public static Instruction Create(OpCode Code) {
+			return new Instruction(CREATE_ABC((int)Code, 0, 0, 0));
+		}
+
+		public static Instruction Create(OpCode Code, int A, int Bx) {
+			return new Instruction(CREATE_ABx((int)Code, A, Bx));
+		}
+
+		public static Instruction Create(OpCode Code, int A, int B, int C) {
+			return new Instruction(CREATE_ABC((int)Code, A, B, C));
+		}
+
 		const int SIZE_C = 9;
 		const int SIZE_B = 9;
-		const int SIZE_Bx = (SIZE_C + SIZE_B);
+		const int SIZE_Bx = (SIZE_B + SIZE_C);
 		const int SIZE_A = 8;
 		const int SIZE_OP = 6;
 
@@ -87,22 +74,27 @@ namespace LuaBin {
 
 		const int BITRK = (1 << (SIZE_B - 1));
 
-		public static int CREATE_ABCBx(int O, int A, int B, int C, int Bx) {
-			return ((O << POS_OP) | (A << POS_A) | (B << POS_B) | (C << POS_C) | (Bx << POS_Bx));
+		internal static int CREATE_ABC(int O, int A, int B, int C) {
+			return ((O << POS_OP) | (A << POS_A) | (B << POS_B) | (C << POS_C));
 		}
-		public static int MASK1(int n, int p) {
+
+		internal static int CREATE_ABx(int O, int A, int Bx) {
+			return ((O << POS_OP) | (A << POS_A) | (Bx << POS_Bx));
+		}
+
+		internal static int MASK1(int n, int p) {
 			return ((~((~0) << n)) << p);
 		}
 
-		public static int MASK0(int n, int p) {
+		internal static int MASK0(int n, int p) {
 			return (~MASK1(n, p));
 		}
 
-		public static bool IsConst(int x) {
+		internal static bool IsConst(int x) {
 			return ((x) & BITRK) > 0;
 		}
 
-		public static int Indexk(int r) {
+		internal static int Indexk(int r) {
 			return ((int)(r) & ~BITRK);
 		}
 	}

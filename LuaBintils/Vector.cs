@@ -17,6 +17,17 @@ namespace LuaBin {
 			}
 		}
 
+		public void Push(T Item) {
+			Array.Resize(ref Data, Data.Length + 1);
+			Data[Data.Length - 1] = Item;
+		}
+
+		public T Pop() {
+			T Item = Data[Data.Length - 1];
+			Array.Resize(ref Data, Data.Length - 1);
+			return Item;
+		}
+
 		public int Length {
 			get {
 				return Data.Length;
@@ -39,6 +50,10 @@ namespace LuaBin {
 			Data = Ints;
 		}
 
+		public IntVector() {
+			Data = new int[] { };
+		}
+
 		public void Save(BinaryWriter W) {
 			W.Write(Data.Length);
 			for (int i = 0; i < Data.Length; i++)
@@ -59,6 +74,18 @@ namespace LuaBin {
 
 		public InstrVector(Instruction[] Instrs) {
 			Data = Instrs;
+		}
+
+		public InstrVector() {
+			Data = new Instruction[] { };
+		}
+
+		public void Push(OpCode O, int A, int B, int C) {
+			Push(Instruction.Create(O, A, B, C));
+		}
+
+		public void Push(OpCode O, int A, int Bx) {
+			Push(Instruction.Create(O, A, Bx));
 		}
 
 		public void Save(BinaryWriter W) {

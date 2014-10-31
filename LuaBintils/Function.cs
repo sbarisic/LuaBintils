@@ -35,11 +35,30 @@ namespace LuaBin {
 		}
 
 		public Function(Instruction[] Instrs) {
-			Src = "";
-			MaxStackSize = 6;
-			Code = new InstrVector(Instrs);
+			Src = "@.NET";
+			IsVararg = true;
+			if (Instrs != null)
+				Code = new InstrVector(Instrs);
+			else
+				Code = new InstrVector();
 			Constants = new Constants();
 			DebugInfo = new DbgInfo();
+		}
+
+		public Function()
+			: this((Instruction[])null) {
+		}
+
+		public void Push(OpCode O, int A, int Bx) {
+			Code.Push(O, A, Bx);
+		}
+
+		public void Push(OpCode O, int A, int B, int C) {
+			Code.Push(O, A, B, C);
+		}
+
+		public int Push(LType LuaType, object Val) {
+			return Constants.Add(LuaType, Val);
 		}
 
 		public void Save(BinaryWriter W) {
