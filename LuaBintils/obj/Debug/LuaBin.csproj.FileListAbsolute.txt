@@ -1,0 +1,5 @@
+E:\Projects\LuaSharp\LuaBin\obj\Debug\LuaBin.csprojResolveAssemblyReference.cache
+E:\Projects\LuaSharp\bin\LuaBin.dll
+E:\Projects\LuaSharp\bin\LuaBin.pdb
+E:\Projects\LuaSharp\LuaBin\obj\Debug\LuaBin.dll
+E:\Projects\LuaSharp\LuaBin\obj\Debug\LuaBin.pdb
