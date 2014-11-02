@@ -25,14 +25,13 @@ namespace LuaBin {
 						List.Add(new Tuple<LType, object>(T, R.ReadBoolean()));
 						break;
 					case LType.Number:
-						List.Add(new Tuple<LType, object>(T, R.ReadInt64()));
+						List.Add(new Tuple<LType, object>(T, R.ReadDouble()));
 						break;
 					case LType.String:
 						List.Add(new Tuple<LType, object>(T, R.ReadLuaString()));
 						break;
 					default:
-						Dbg.Assert(false, "Unexpected lua type in constants");
-						break;
+						throw new Exception("Type " + T.ToString() + " not implemented");
 				}
 			}
 
@@ -49,11 +48,30 @@ namespace LuaBin {
 
 		public int Add(LType T, object Val) {
 			Tuple<LType, object> Item = new Tuple<LType, object>(T, Val);
+			if (List.Contains(Item))
+				return List.IndexOf(Item);
 			List.Add(Item);
 			return List.IndexOf(Item);
 		}
 
-		public void Add(Function F) {
+		public int Add(object O) {
+			if (O is string)
+				return Add(LType.String, O);
+			else if (O is int || O is float || O is double) {
+				if (O is int)
+					O = (double)(int)O;
+				else if (O is float)
+					O = (double)(float)O;
+				return Add(LType.Number, O);
+			} else if (O == null)
+				return Add(LType.Nil, null);
+			else if (O is bool)
+				return Add(LType.Bool, O);
+
+			throw new Exception("Not implemented, can't add constant");
+		}
+
+		public void AddFunc(Function F) {
 			Functions.Add(F);
 		}
 
@@ -63,15 +81,19 @@ namespace LuaBin {
 				LType T = List[i].Item1;
 				W.WriteLuaType(T);
 				switch (T) {
+					case LType.Nil:
+						break;
 					case LType.Bool:
 						W.Write((bool)List[i].Item2);
 						break;
 					case LType.Number:
-						W.Write((long)List[i].Item2);
+						W.Write((double)List[i].Item2);
 						break;
 					case LType.String:
 						W.WriteLuaString((string)List[i].Item2);
 						break;
+					default:
+						throw new Exception("Type " + T.ToString() + " not implemented");
 				}
 			}
 			W.Write(Functions.Count);

@@ -31,6 +31,8 @@ namespace LuaBin {
 
 		public Header(BinaryReader R) {
 			R.BaseStream.Seek(0, SeekOrigin.Begin);
+			if (R.BaseStream.Length == 0)
+				throw new Exception("Lua chunk file length 0, cannot read");
 
 			Dbg.Assert(R.ReadByte() == 0x1B, "Invalid Header");
 			Dbg.Assert(R.ReadByte() == 0x4C && R.ReadByte() == 0x75 && R.ReadByte() == 0x61, "Invalid Header");

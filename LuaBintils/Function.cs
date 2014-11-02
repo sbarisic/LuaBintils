@@ -35,7 +35,7 @@ namespace LuaBin {
 		}
 
 		public Function(Instruction[] Instrs) {
-			Src = "@.NET";
+			Src = "CODE";
 			IsVararg = true;
 			if (Instrs != null)
 				Code = new InstrVector(Instrs);
@@ -47,14 +47,6 @@ namespace LuaBin {
 
 		public Function()
 			: this((Instruction[])null) {
-		}
-
-		public void Push(OpCode O, int A, int Bx) {
-			Code.Push(O, A, Bx);
-		}
-
-		public void Push(OpCode O, int A, int B, int C) {
-			Code.Push(O, A, B, C);
 		}
 
 		public int Push(LType LuaType, object Val) {
@@ -98,17 +90,17 @@ namespace LuaBin {
 			if (IsVararg)
 				SB.Append("+");
 
-			SB.Append(" param(s), ")
+			SB.Append(" param, ")
 			.Append(MaxStackSize)
-			.Append(" slot(s), ")
+			.Append(" stacksize, ")
 			.Append(NUps)
-			.Append(" upvalue(s), ")
+			.Append(" upvalue, ")
 			.Append(DebugInfo.LocalVars.Length)
-			.Append(" local(s), ")
+			.Append(" local, ")
 			.Append(Constants.List.Count)
-			.Append(" constant(s), ")
+			.Append(" constant, ")
 			.Append(Constants.Functions.Count)
-			.AppendLine(" function(s)");
+			.AppendLine(" function");
 
 			for (int i = 0; i < Code.Length; i++) {
 				SB.Append("    ")
@@ -167,6 +159,31 @@ namespace LuaBin {
 			}
 			if (DebugInfo.UpValues.Length == 0)
 				SB.AppendLine("    -  NONE");
+
+			SB.Append("\nfunctions (")
+			.Append(Constants.Functions.Count)
+			.Append(") ")
+			.Append(Src)
+			.AppendLine();
+
+			for (int i = 0; i < Constants.Functions.Count; i++)
+				SB.AppendLine("    " + i + " " + Constants.Functions[i].ToString().Replace("\n", "\n      "));
+			if (Constants.Functions.Count == 0)
+				SB.AppendLine("    -  NONE");
+
+			return SB.ToString();
+		}
+
+		public string ToString2() {
+			StringBuilder SB = new StringBuilder();
+
+			for (int i = 0; i < Code.Length; i++) {
+				SB.Append(Code[i])
+				.AppendLine();
+				if (Code[i].Code == OpCode.CLOSURE)
+					SB.Append("    ")
+					.AppendLine(Constants.Functions[Code[i].Bx].ToString2().Replace("\n", "\n    ").TrimEnd());
+			}
 
 			return SB.ToString();
 		}

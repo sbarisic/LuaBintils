@@ -20,9 +20,8 @@ namespace LuaBin {
 	}
 
 	public struct Instruction {
-		public int I;
-
-		public int A, B, C, Bx, sBx;
+		public int I, A, B, C, Bx, sBx;
+		public bool IsA, IsB, IsC, IsBx, IsBxSigned;
 		public OpCode Code;
 
 		public Instruction(int i) {
@@ -33,8 +32,10 @@ namespace LuaBin {
 			C = ((i) >> POS_C) & MASK1(SIZE_C, 0);
 			Bx = ((i) >> POS_Bx) & MASK1(SIZE_Bx, 0);
 			sBx = (Bx - MAXARG_sBx);
+			IsA = IsB = IsC = IsBx = IsBxSigned = false;
 
 			Code = (OpCode)(((i) >> POS_OP) & MASK1(SIZE_OP, 0));
+			AssignParams();
 		}
 
 		public void Save(BinaryWriter W) {
@@ -42,19 +43,87 @@ namespace LuaBin {
 		}
 
 		public override string ToString() {
-			return Code.ToString();
+			string CodeStr = Code.ToString();
+			CodeStr += new string(' ', 10 - CodeStr.Length);
+
+			string Args = null;
+			if (IsA)
+				Args += ParamFormat("A", A);
+			if (IsB)
+				Args += ParamFormat("B", B);
+			if (IsC)
+				Args += ParamFormat("C", C);
+			if (IsBx) {
+				if (IsBxSigned)
+					Args += ParamFormat("sBx", sBx);
+				else
+					Args += ParamFormat("Bx", Bx);
+			}
+
+			return string.Format("{0} {1}", CodeStr, Args).Trim();
 		}
 
-		public static Instruction Create(OpCode Code) {
-			return new Instruction(CREATE_ABC((int)Code, 0, 0, 0));
+		internal void AssignParams() {
+			switch (Code) {
+				case OpCode.MOVE:
+				case OpCode.LOADNIL:
+				case OpCode.GETUPVAL:
+				case OpCode.SETUPVAL:
+				case OpCode.UNM:
+				case OpCode.NOT:
+				case OpCode.LEN:
+				case OpCode.TEST:
+				case OpCode.RETURN:
+				case OpCode.VARARG:
+					IsA = IsB = true;
+					break;
+				case OpCode.LOADK:
+				case OpCode.GETGLOBAL:
+				case OpCode.SETGLOBAL:
+				case OpCode.CLOSURE:
+					IsA = IsBx = true;
+					break;
+				case OpCode.LOADBOOL:
+				case OpCode.GETTABLE:
+				case OpCode.SETTABLE:
+				case OpCode.NEWTABLE:
+				case OpCode.SELF:
+				case OpCode.ADD:
+				case OpCode.SUB:
+				case OpCode.MUL:
+				case OpCode.DIV:
+				case OpCode.MOD:
+				case OpCode.POW:
+				case OpCode.CONCAT:
+				case OpCode.EQ:
+				case OpCode.LT:
+				case OpCode.LE:
+				case OpCode.TESTSET:
+				case OpCode.CALL:
+				case OpCode.TAILCALL:
+				case OpCode.SETLIST:
+					IsA = IsB = IsC = true;
+					break;
+				case OpCode.JMP:
+					IsBx = IsBxSigned = true;
+					break;
+				case OpCode.FORLOOP:
+				case OpCode.FORPREP:
+					IsA = IsBx = IsBxSigned = true;
+					break;
+				case OpCode.TFORLOOP:
+					IsA = IsC = true;
+					break;
+				case OpCode.CLOSE:
+					IsA = true;
+					break;
+				default:
+					throw new Exception("Unknown opcode: " + Code.ToString());
+			}
 		}
 
-		public static Instruction Create(OpCode Code, int A, int Bx) {
-			return new Instruction(CREATE_ABx((int)Code, A, Bx));
-		}
-
-		public static Instruction Create(OpCode Code, int A, int B, int C) {
-			return new Instruction(CREATE_ABC((int)Code, A, B, C));
+		internal static string ParamFormat(string Name, object Val) {
+			return string.Format("{0} = {1}  ", Name, Val);
 		}
 
 		const int SIZE_C = 9;
@@ -78,8 +147,24 @@ namespace LuaBin {
 			return ((O << POS_OP) | (A << POS_A) | (B << POS_B) | (C << POS_C));
 		}
 
+		public static Instruction CreateABC(OpCode O, int A, int B, int C) {
+			return new Instruction(CREATE_ABC((int)O, A, B, C));
+		}
+
 		internal static int CREATE_ABx(int O, int A, int Bx) {
 			return ((O << POS_OP) | (A << POS_A) | (Bx << POS_Bx));
+		}
+
+		public static Instruction CreateABx(OpCode O, int A, int Bx) {
+			return new Instruction(CREATE_ABx((int)O, A, Bx));
+		}
+
+		internal static int CREATE_AB(int O, int A, int B) {
+			return ((O << POS_OP) | (A << POS_A) | (B << POS_B));
+		}
+
+		public static Instruction CreateAB(OpCode O, int A, int B) {
+			return new Instruction(CREATE_AB((int)O, A, B));
 		}
 
 		internal static int MASK1(int n, int p) {

@@ -80,14 +80,6 @@ namespace LuaBin {
 			Data = new Instruction[] { };
 		}
 
-		public void Push(OpCode O, int A, int B, int C) {
-			Push(Instruction.Create(O, A, B, C));
-		}
-
-		public void Push(OpCode O, int A, int Bx) {
-			Push(Instruction.Create(O, A, Bx));
-		}
-
 		public void Save(BinaryWriter W) {
 			W.Write(Data.Length);
 			for (int i = 0; i < Data.Length; i++)

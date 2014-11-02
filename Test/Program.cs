@@ -5,30 +5,35 @@ using System.Text;
 using System.Threading.Tasks;
 
 using LuaBin;
+using LuaBin.API;
 
 namespace Test {
 	class Program {
 		static void Main(string[] args) {
 			Console.Title = "LuaBintils Test";
 
+			/*
+			{
+				LuaChunk LC = new LuaChunk("luac.out");
+				Console.WriteLine(LC.Functions[0].ToString2());
+				Console.ReadLine();
+				return;
+			}
+			//*/
+
 			LuaChunk MainChunk = new LuaChunk();
-			Function MainFunc = MainChunk.CreateFunction(2);
 
-			int PrintIdx = MainFunc.Push(LType.String, "print");
-			int Str1Idx = MainFunc.Push(LType.String, "Hello World #1!");
-			int Str2Idx = MainFunc.Push(LType.String, "Hello World #2!");
+			Lua L = new Lua(MainChunk.CreateFunction(0, "@luac.lua"));
+			L.Load("Hello World!");
+			L.GetGlobal("print");
+			L.Swap(0, 1);
+			L.Call(0, 2, 1);
+			L.Return(0, 1);
 
-			MainFunc.Push(OpCode.GETGLOBAL, 0, PrintIdx);
-			MainFunc.Push(OpCode.LOADK, 1, Str1Idx);
-			MainFunc.Push(OpCode.CALL, 0, 2, 1);
-			MainFunc.Push(OpCode.GETGLOBAL, 0, PrintIdx);
-			MainFunc.Push(OpCode.LOADK, 1, Str2Idx);
-			MainFunc.Push(OpCode.CALL, 0, 2, 1);
-			MainFunc.Push(OpCode.RETURN, 0, 0);
-
+			L.Func.MaxStackSize = 50;
 			MainChunk.Save("lua.out");
 
-			Console.WriteLine("Complete");
+			Console.WriteLine(MainChunk.Functions[0]);
 			Console.ReadLine();
 		}
 	}

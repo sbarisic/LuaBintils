@@ -4,6 +4,6 @@ E:\Projects\LuaSharp\LuaBin\obj\Debug\LuaBintils.dll
 E:\Projects\LuaSharp\LuaBin\obj\Debug\LuaBintils.pdb
 E:\Projects\LuaBintils\bin\LuaBintils.dll
 E:\Projects\LuaBintils\bin\LuaBintils.pdb
-E:\Projects\LuaBintils\LuaBintils\obj\Debug\LuaBintils.csprojResolveAssemblyReference.cache
 E:\Projects\LuaBintils\LuaBintils\obj\Debug\LuaBintils.dll
 E:\Projects\LuaBintils\LuaBintils\obj\Debug\LuaBintils.pdb
+E:\Projects\LuaBintils\LuaBintils\obj\Debug\LuaBintils.csprojResolveAssemblyReference.cache

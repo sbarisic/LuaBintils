@@ -11,28 +11,37 @@ namespace LuaBin {
 		public Header Header;
 		public List<Function> Functions;
 
-		public LuaChunk()
-			: this((Header)null) {
+		private LuaChunk()  {
+			Functions = new List<Function>();
 		}
 
-		public LuaChunk(Header H) {
+		public LuaChunk(string Path)
+			: this() {
+			BinaryReader BR = new BinaryReader(File.OpenRead(Path));
+			Header = new Header(BR);
+			Functions.Add(new Function(BR));
+			BR.Close();
+		}
+
+		public LuaChunk(Header H)
+			: this() {
 			Header = H;
 			if (H == null)
 				Header = new Header();
-			Functions = new List<Function>();
 		}
 
 		public LuaChunk(params Function[] Funcs)
 			: this(null, Funcs) {
 		}
 
-		public LuaChunk(Header H, params Function[] Funcs) : this(H) {
+		public LuaChunk(Header H, params Function[] Funcs)
+			: this(H) {
 			if (Funcs != null)
 				for (int i = 0; i < Funcs.Length; i++)
 					Functions.Add(Funcs[i]);
 		}
 
-		public Function CreateFunction(byte MaxStackSize = 0, string SrcName = "=stdin") {
+		public Function CreateFunction(byte MaxStackSize = 0, string SrcName = "CODE") {
 			Function F = new Function();
 			F.Src = SrcName;
 			F.MaxStackSize = MaxStackSize;
