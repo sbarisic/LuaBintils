@@ -46,6 +46,12 @@ namespace LuaBin {
 			Functions = new List<Function>();
 		}
 
+		public Tuple<LType, object> this[int Idx] {
+			get {
+				return List[Idx];
+			}
+		}
+
 		public int Add(LType T, object Val) {
 			Tuple<LType, object> Item = new Tuple<LType, object>(T, Val);
 			if (List.Contains(Item))

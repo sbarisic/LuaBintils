@@ -1,0 +1,6 @@
+E:\Projects\LuaBintils\bin\LuaVM.exe.config
+E:\Projects\LuaBintils\bin\LuaVM.exe
+E:\Projects\LuaBintils\bin\LuaVM.pdb
+E:\Projects\LuaBintils\LuaVM\obj\Debug\LuaVM.csprojResolveAssemblyReference.cache
+E:\Projects\LuaBintils\LuaVM\obj\Debug\LuaVM.exe
+E:\Projects\LuaBintils\LuaVM\obj\Debug\LuaVM.pdb

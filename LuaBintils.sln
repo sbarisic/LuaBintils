@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaBintils", "LuaBintils\Lu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Test", "Test\Test.csproj", "{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LuaVM", "LuaVM\LuaVM.csproj", "{B5CF183D-13D0-49C8-8BDC-9EBFB78461C7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F67BF82A-48D3-4E6B-A216-3EF870C6D5E3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B5CF183D-13D0-49C8-8BDC-9EBFB78461C7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B5CF183D-13D0-49C8-8BDC-9EBFB78461C7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B5CF183D-13D0-49C8-8BDC-9EBFB78461C7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B5CF183D-13D0-49C8-8BDC-9EBFB78461C7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

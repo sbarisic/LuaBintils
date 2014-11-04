@@ -1,10 +1,16 @@
-function A()
-end
+function FUNC() 
+	print("FUNC")
 
-function B()
-	function D()
+	function A()
+		print("A")
 	end
+	
+	function B()
+		print("B")
+	end
+	
+	A()
+	B()
 end
 
-function C()
-end
+FUNC()

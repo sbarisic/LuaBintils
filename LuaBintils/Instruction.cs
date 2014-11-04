@@ -122,6 +122,16 @@ namespace LuaBin {
 			}
 		}
 
+		#region ==(Instruction, OpCode)
+		public static bool operator ==(Instruction I, OpCode O) {
+			return I.Code == O;
+		}
+
+		public static bool operator !=(Instruction I, OpCode O) {
+			return I.Code != O;
+		}
+		#endregion
+
 		internal static string ParamFormat(string Name, object Val) {
 			return string.Format("{0} = {1}  ", Name, Val);
 		}
